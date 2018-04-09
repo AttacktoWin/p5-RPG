@@ -1,7 +1,7 @@
 game.levelData = {
     w: 1000,
     h: 1000,
-    name: "test"
+    name: "The Void"
 }
 game.collisionData = [];
 game.collisionData.push({

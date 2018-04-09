@@ -53,6 +53,8 @@ class Player {
         this.name = name;
         this.x = gameWidth*20;
         this.y = gameHeight*80;
+        this.xSpeed = 0;
+        this.ySpeed = 0;
         this.aFrame = 0;
         this.state = "walkR";
         this.currentFrame = { x: 0, y: 0 };
@@ -67,53 +69,53 @@ class Player {
     move() {
         if (game.state == "active") {
             if (keyIsDown(87) && keyIsDown(65)) {
-                this.y -= gameHeight/2;
-                this.x -= gameHeight/2;
+                this.ySpeed -= gameHeight/2;
+                this.xSpeed -= gameHeight/2;
                 if (this.state != "walkUL") {
                     this.state = "walkUL";
                     this.aFrame = 0;
                 }
             } else if (keyIsDown(87) && keyIsDown(68)) {
-                this.y -= gameHeight/2;
-                this.x += gameHeight/2;
+                this.ySpeed -= gameHeight/2;
+                this.xSpeed += gameHeight/2;
                 if (this.state != "walkUR") {
                     this.state = "walkUR";
                     this.aFrame = 0;
                 }
             } else if (keyIsDown(83) && keyIsDown(65)) {
-                this.y += gameHeight/2;
-                this.x -= gameHeight/2;
+                this.ySpeed += gameHeight/2;
+                this.xSpeed -= gameHeight/2;
                 if (this.state != "walkDL") {
                     this.state = "walkDL";
                     this.aFrame = 0;
                 }
             } else if (keyIsDown(83) && keyIsDown(68)) {
-                this.y += gameHeight/2;
-                this.x += gameHeight/2;
+                this.ySpeed += gameHeight/2;
+                this.xSpeed += gameHeight/2;
                 if (this.state != "walkDR") {
                     this.state = "walkDR";
                     this.aFrame = 0;
                 }
             } else if (keyIsDown(87)) {
-                this.y -= gameHeight/2;
+                this.ySpeed -= gameHeight/2;
                 if (this.state != "walkU") {
                     this.state = "walkU";
                     this.aFrame = 0;
                 }
             } else if (keyIsDown(83)) {
-                this.y += gameHeight/2;
+                this.ySpeed += gameHeight/2;
                 if (this.state != "walkD") {
                     this.state = "walkD";
                     this.aFrame = 0;
                 }
             } else if (keyIsDown(65)) {
-                this.x -= gameWidth/2;
+                this.xSpeed -= gameWidth/2;
                 if (this.state != "walkL") {
                     this.state = "walkL";
                     this.aFrame = 0;
                 }
             } else if (keyIsDown(68)) {
-                this.x += gameWidth/2;
+                this.xSpeed += gameWidth/2;
                 if (this.state != "walkR") {
                     this.state = "walkR";
                     this.aFrame = 0;
@@ -134,13 +136,16 @@ class Player {
 
             for (var i = 0; i < game.collisionData.length; i++) {
                 if (game.collisionData[i].solid) {
-                    if (this.x  + 20 > game.collisionData[i].x && this.x < game.collisionData[i].x + game.collisionData[i].w/2) {
-                        if (this.y + 50 > game.collisionData[i].y && this.y < game.collisionData[i].y + game.collisionData[i].h) {
-                            this.x = game.collisionData[i].x - 20;
-                        }
+                    if (this.x < game.collisionData[i].x && this.x + 20 > game.collisionData[i].x) {
+
                     }
                 }
             }
+
+            this.x += this.xSpeed;
+            this.y += this.ySpeed;
+            this.xSpeed = 0;
+            this.ySpeed = 0;
         }
     }
 

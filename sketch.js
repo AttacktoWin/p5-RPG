@@ -40,7 +40,6 @@ function keyPressed() {
         player = new Player("Default");
         game.changeLevel("test");
     }
-    console.log(player.state);
 }
 
 function keyReleased() {

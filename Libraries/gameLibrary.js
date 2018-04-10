@@ -22,6 +22,7 @@ class Game {
 
     display() {
         if (this.state != "start") {
+            image(this.levelData.tex, 0 - player.x + width/2, 0 - player.y + height/2, this.levelData.w, this.levelData.h, 0, 0);
             image(chr, width/2, height/2, 20, 50, player.currentFrame.x * 20, player.currentFrame.y * 50, 20, 50);
             for (var i = 0; i < this.collisionData.length; i++) {
                 if (this.collisionData[i].x < player.x + width/2 && this.collisionData[i].x + this.collisionData[i].w > player.x - width/2) {
@@ -127,17 +128,32 @@ class Player {
             if (this.y < 0) {
                 this.y = 0;
             }
-            if (this.x > game.levelData.w) {
-                this.x = game.levelData.w;
+            if (this.x  + 20 > game.levelData.w) {
+                this.x = game.levelData.w - 20;
             }
-            if (this.y > game.levelData.h) {
-                this.y = game.levelData.h;
+            if (this.y + 50 > game.levelData.h) {
+                this.y = game.levelData.h - 50;
             }
 
             for (var i = 0; i < game.collisionData.length; i++) {
                 if (game.collisionData[i].solid) {
-                    if (this.x < game.collisionData[i].x && this.x + 20 > game.collisionData[i].x) {
-
+                    if (this.x + this.xSpeed + 20 > game.collisionData[i].x && this.x + this.xSpeed < game.collisionData[i].x + game.collisionData[i].w) {
+                        if (this.y + 50 > game.collisionData[i].y && this.y < game.collisionData[i].y + game.collisionData[i].h) {
+                            if (this.xSpeed > 0) {
+                                this.xSpeed = game.collisionData[i].x - this.x - 20;
+                            } else {
+                                this.xSpeed = game.collisionData[i].x + game.collisionData[i].w - this.x;
+                            }
+                        }
+                    }
+                    if (this.y + this.ySpeed + 50 > game.collisionData[i].y && this.y + this.ySpeed < game.collisionData[i].y + game.collisionData[i].h) {
+                        if (this.x + 20 > game.collisionData[i].x && this.x < game.collisionData[i].x + game.collisionData[i].w) {
+                            if (this.ySpeed > 0) {
+                                this.ySpeed = game.collisionData[i].y - this.y - 50;
+                            } else {
+                                this.ySpeed = game.collisionData[i].y + game.collisionData[i].h - this.y;
+                            }
+                        }
                     }
                 }
             }

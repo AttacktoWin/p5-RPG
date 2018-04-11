@@ -15,7 +15,7 @@ game.collisionData.push({
     func: function() {
         if (game.flags[1].state) {
             game.flags[2].state = true;
-            game.collisionData.splice(0,1);
+            game.changeLevel("test01");
         }
     }
 });

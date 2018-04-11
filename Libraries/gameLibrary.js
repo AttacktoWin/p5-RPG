@@ -3,16 +3,25 @@ class Game {
         this.paused = false;
         this.state = "start";
         this.location = 0;
-        this.flags = [
-            { name: "test0", state: false },
-            { name: "test1", state: false },
-            { name: "test2", state: false }
+        this.flags = [{
+                name: "test0",
+                state: false
+            },
+            {
+                name: "test1",
+                state: false
+            },
+            {
+                name: "test2",
+                state: false
+            }
         ];
         this.collisionData = [];
         this.levelData = {};
         this.nameFrame = 0;
+        this.progress = 0;
     }
-    
+
     pause() {
         this.state = "paused";
     }
@@ -24,31 +33,49 @@ class Game {
         this.nameFrame = 1;
     }
 
+    scene() {
+        this.state = "scene";
+    }
+
     display() {
-        if (this.state != "start") {
-            image(this.levelData.tex, 0 - player.x + width/2, 0 - player.y + height/2, this.levelData.w, this.levelData.h, 0, 0);
-            image(chr, width/2, height/2, 20, 50, player.currentFrame.x * 20, player.currentFrame.y * 50, 20, 50);
+        if (this.state != "start" && this.state != "scene") {
+            image(this.levelData.tex, 0 - player.x + width / 2, 0 - player.y + height / 2, this.levelData.w, this.levelData.h, 0, 0);
+            image(chr, width / 2, height / 2, 20, 50, player.currentFrame.x * 20, player.currentFrame.y * 50, 20, 50);
             for (var i = 0; i < this.collisionData.length; i++) {
-                if (this.collisionData[i].x < player.x + width/2 && this.collisionData[i].x + this.collisionData[i].w > player.x - width/2) {
-                    if (this.collisionData[i].y < player.y + height/2 && this.collisionData[i].y + this.collisionData[i].h > player.y - height/2) {
-                        image(this.collisionData[i].tex, this.collisionData[i].x - player.x + width/2, this.collisionData[i].y - player.y + height/2, this.collisionData[i].w, this.collisionData[i].h, 0, 0, this.collisionData[i].w, this.collisionData[i].h);
+                if (this.collisionData[i].x < player.x + width / 2 && this.collisionData[i].x + this.collisionData[i].w > player.x - width / 2) {
+                    if (this.collisionData[i].y < player.y + height / 2 && this.collisionData[i].y + this.collisionData[i].h > player.y - height / 2) {
+                        image(this.collisionData[i].tex, this.collisionData[i].x - player.x + width / 2, this.collisionData[i].y - player.y + height / 2, this.collisionData[i].w, this.collisionData[i].h, 0, 0, this.collisionData[i].w, this.collisionData[i].h);
                     }
                 }
             }
             if (this.nameFrame > 0) {
-                textSize(gameWidth*4);
+                textSize(gameWidth * 4);
                 if (this.nameFrame > 81) {
                     fill(255, 255, 255, 415 - (this.nameFrame * 2));
                 } else {
                     fill(255);
                 }
                 noStroke();
-                text(this.levelData.name, gameWidth*2, gameHeight*80);
+                text(this.levelData.name, gameWidth * 2, gameHeight * 80);
                 this.nameFrame++;
                 if (this.nameFrame == 201) {
                     this.nameFrame = 0;
                 }
             }
+        }
+        if (this.state == "scene") {
+            noStroke();
+            fill(0);
+            rect(0, gameHeight*80, width, gameHeight*20);
+            var sprite = loadImage(sceneobj[this.progress].sprite);
+            image(sprite, 0, gameHeight*80 - 200, 200, 200);
+            var txt = sceneobj[this.progress].txt;
+            fill(255);
+            textSize(gameWidth*2);
+            text(txt, 10, gameHeight*81 + 200);
+            var name = sceneobj[this.progress].name;
+            textSize(gameWidth);
+            text(name, 5, gameHeight*80 + 200);
         }
     }
 }
@@ -56,13 +83,16 @@ class Game {
 class Player {
     constructor(name) {
         this.name = name;
-        this.x = gameWidth*20;
-        this.y = gameHeight*80;
+        this.x = gameWidth * 20;
+        this.y = gameHeight * 80;
         this.xSpeed = 0;
         this.ySpeed = 0;
         this.aFrame = 0;
         this.state = "walkR";
-        this.currentFrame = { x: 0, y: 0 };
+        this.currentFrame = {
+            x: 0,
+            y: 0
+        };
         this.hurt = false;
         this.hurtFrame = 0;
         this.inv = [];
@@ -74,53 +104,53 @@ class Player {
     move() {
         if (game.state == "active") {
             if (keyIsDown(87) && keyIsDown(65)) {
-                this.ySpeed -= gameHeight/2;
-                this.xSpeed -= gameHeight/2;
+                this.ySpeed -= gameHeight / 2;
+                this.xSpeed -= gameHeight / 2;
                 if (this.state != "walkUL") {
                     this.state = "walkUL";
                     this.aFrame = 0;
                 }
             } else if (keyIsDown(87) && keyIsDown(68)) {
-                this.ySpeed -= gameHeight/2;
-                this.xSpeed += gameHeight/2;
+                this.ySpeed -= gameHeight / 2;
+                this.xSpeed += gameHeight / 2;
                 if (this.state != "walkUR") {
                     this.state = "walkUR";
                     this.aFrame = 0;
                 }
             } else if (keyIsDown(83) && keyIsDown(65)) {
-                this.ySpeed += gameHeight/2;
-                this.xSpeed -= gameHeight/2;
+                this.ySpeed += gameHeight / 2;
+                this.xSpeed -= gameHeight / 2;
                 if (this.state != "walkDL") {
                     this.state = "walkDL";
                     this.aFrame = 0;
                 }
             } else if (keyIsDown(83) && keyIsDown(68)) {
-                this.ySpeed += gameHeight/2;
-                this.xSpeed += gameHeight/2;
+                this.ySpeed += gameHeight / 2;
+                this.xSpeed += gameHeight / 2;
                 if (this.state != "walkDR") {
                     this.state = "walkDR";
                     this.aFrame = 0;
                 }
             } else if (keyIsDown(87)) {
-                this.ySpeed -= gameHeight/2;
+                this.ySpeed -= gameHeight / 2;
                 if (this.state != "walkU") {
                     this.state = "walkU";
                     this.aFrame = 0;
                 }
             } else if (keyIsDown(83)) {
-                this.ySpeed += gameHeight/2;
+                this.ySpeed += gameHeight / 2;
                 if (this.state != "walkD") {
                     this.state = "walkD";
                     this.aFrame = 0;
                 }
             } else if (keyIsDown(65)) {
-                this.xSpeed -= gameWidth/2;
+                this.xSpeed -= gameWidth / 2;
                 if (this.state != "walkL") {
                     this.state = "walkL";
                     this.aFrame = 0;
                 }
             } else if (keyIsDown(68)) {
-                this.xSpeed += gameWidth/2;
+                this.xSpeed += gameWidth / 2;
                 if (this.state != "walkR") {
                     this.state = "walkR";
                     this.aFrame = 0;
@@ -132,7 +162,7 @@ class Player {
             if (this.y < 0) {
                 this.y = 0;
             }
-            if (this.x  + 20 > game.levelData.w) {
+            if (this.x + 20 > game.levelData.w) {
                 this.x = game.levelData.w - 20;
             }
             if (this.y + 50 > game.levelData.h) {
@@ -166,7 +196,7 @@ class Player {
                         }
                     }
                 }
-                
+
             }
 
             this.x += this.xSpeed;

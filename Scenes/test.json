@@ -1,0 +1,6 @@
+{
+    "length": 3,
+    "0": { "txt": "Welcome to the Void!", "sprite": "'Sprites/thevoid.png'", "name": "The Void" },
+    "1": { "txt": "We hope you enjoy your stay!", "sprite": "'Sprites/thevoid.png'", "name": "The Void" },
+    "2": { "txt": "You're here forever", "sprite": "'Sprites/thevoid1.png'", "name": "The Void" }
+}

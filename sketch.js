@@ -3,6 +3,7 @@
 
 // Declare Global Variables
 let gameWidth, gameHeight;
+let sceneobj;
 let game, player;
 let chr;
 
@@ -35,10 +36,15 @@ function draw() {
 }
 
 function keyPressed() {
-    if (keyCode == 32) {
+    if (keyCode == 13) {
         game.state = "active";
         player = new Player("Default");
         game.changeLevel("test");
+    }
+    if (game.state == "scene") {
+        if (keyCode == 32) {
+            game.progress++;
+        }
     }
 }
 

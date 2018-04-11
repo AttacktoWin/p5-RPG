@@ -11,7 +11,13 @@ game.collisionData.push({
     w: 50,
     h: 200,
     tex: loadImage('Sprites/tempWall.png'),
-    solid: true
+    solid: true,
+    func: function() {
+        if (game.flags[1].state) {
+            game.flags[2].state = true;
+            game.collisionData.splice(0,1);
+        }
+    }
 });
 game.collisionData.push({
     x: 500,
@@ -19,7 +25,14 @@ game.collisionData.push({
     w: 50,
     h: 200,
     tex: loadImage('Sprites/tempWall.png'),
-    solid: true
+    solid: true,
+    func: function() {
+        if (game.flags[0].state) {
+            game.flags[1].state = true;
+            game.collisionData[0].solid = false;
+            game.collisionData.splice(1,1);
+        }
+    }
 });
 game.collisionData.push({
     x: 700,
@@ -27,5 +40,10 @@ game.collisionData.push({
     w: 50,
     h: 200,
     tex: loadImage('Sprites/tempWall.png'),
-    solid: false
+    solid: false,
+    func: function() {
+        game.flags[0].state = true;
+        game.collisionData[1].solid = false;
+        game.collisionData.splice(2,1);
+    }
 });

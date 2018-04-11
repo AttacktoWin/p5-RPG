@@ -3,7 +3,11 @@ class Game {
         this.paused = false;
         this.state = "start";
         this.location = 0;
-        this.flags = [];
+        this.flags = [
+            { name: "test0", state: false },
+            { name: "test1", state: false },
+            { name: "test2", state: false }
+        ];
         this.collisionData = [];
         this.levelData = {};
         this.nameFrame = 0;
@@ -155,7 +159,14 @@ class Player {
                             }
                         }
                     }
+                } else {
+                    if (this.x + 20 > game.collisionData[i].x && this.x < game.collisionData[i].x + game.collisionData[i].w) {
+                        if (this.y + 50 > game.collisionData[i].y && this.y < game.collisionData[i].y + game.collisionData[i].h) {
+                            game.collisionData[i].func();
+                        }
+                    }
                 }
+                
             }
 
             this.x += this.xSpeed;

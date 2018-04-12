@@ -1,8 +1,8 @@
 {
     "length": 3,
     "data": [
-        { "txt": "Welcome to the Void!", "sprite": "'Sprites/thevoid.png'", "name": "The Void" },
-        { "txt": "We hope you enjoy your stay!", "sprite": "'Sprites/thevoid.png'", "name": "The Void" },
-        { "txt": "You're here forever", "sprite": "'Sprites/thevoid1.png'", "name": "The Void" }
+        { "txt": "Welcome to the Void!", "sprite": "'Sprites/theVoid.png'", "name": "The Void" },
+        { "txt": "We hope you enjoy your stay!", "sprite": "'Sprites/theVoid.png'", "name": "The Void" },
+        { "txt": "You're here forever", "sprite": "'Sprites/theVoid1.png'", "name": "The Void" }
     ]
 }

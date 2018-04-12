@@ -39,6 +39,7 @@ class Game {
 
     display() {
         if (this.state != "start" && this.state != "scene") {
+            noStroke();
             image(this.levelData.tex, 0 - player.x + width / 2, 0 - player.y + height / 2, this.levelData.w, this.levelData.h, 0, 0);
             image(chr, width / 2, height / 2, 20, 50, player.currentFrame.x * 20, player.currentFrame.y * 50, 20, 50);
             for (var i = 0; i < this.collisionData.length; i++) {

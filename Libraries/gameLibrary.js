@@ -34,7 +34,7 @@ class Game {
     }
 
     scene() {
-        this.state = "scene";
+        game.state = "scene";
     }
 
     display() {
@@ -67,15 +67,20 @@ class Game {
             noStroke();
             fill(0);
             rect(0, gameHeight*80, width, gameHeight*20);
-            var sprite = loadImage(sceneobj[this.progress].sprite);
+            var sprite = loadImage(sceneobj.data[this.progress].sprite);
             image(sprite, 0, gameHeight*80 - 200, 200, 200);
-            var txt = sceneobj[this.progress].txt;
+            var txt = sceneobj.data[this.progress].txt;
             fill(255);
             textSize(gameWidth*2);
             text(txt, 10, gameHeight*81 + 200);
-            var name = sceneobj[this.progress].name;
+            var name = sceneobj.data[this.progress].name;
             textSize(gameWidth);
             text(name, 5, gameHeight*80 + 200);
+            if (this.progress == sceneobj[0] - 1) {
+                this.progress = 0;
+                this.state = "active";
+                sceneobj = {};
+            }
         }
     }
 }

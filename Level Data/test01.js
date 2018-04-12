@@ -5,5 +5,4 @@ game.levelData = {
     tex: loadImage('Sprites/void2bg.png')
 }
 game.collisionData = [];
-sceneobj = loadJSON('Scenes/test.json');
-game.scene();
+sceneobj = loadJSON('Scenes/test.json', game.scene);

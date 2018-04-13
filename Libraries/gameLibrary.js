@@ -41,7 +41,7 @@ class Game {
         if (this.state != "start" && this.state != "scene") {
             noStroke();
             image(this.levelData.tex, 0 - player.x + width / 2, 0 - player.y + height / 2, this.levelData.w, this.levelData.h, 0, 0);
-            image(chr, width / 2, height / 2, 20, 50, player.currentFrame.x * 20, player.currentFrame.y * 50, 20, 50);
+            image(chr, width / 2, height / 2, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
             for (var i = 0; i < this.collisionData.length; i++) {
                 if (this.collisionData[i].x < player.x + width / 2 && this.collisionData[i].x + this.collisionData[i].w > player.x - width / 2) {
                     if (this.collisionData[i].y < player.y + height / 2 && this.collisionData[i].y + this.collisionData[i].h > player.y - height / 2) {
@@ -66,9 +66,33 @@ class Game {
         }
         if (this.state == "scene") {
             noStroke();
+            image(this.levelData.tex, 0 - player.x + width / 2, 0 - player.y + height / 2, this.levelData.w, this.levelData.h, 0, 0);
+            image(chr, width / 2, height / 2, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
+            for (var i = 0; i < this.collisionData.length; i++) {
+                if (this.collisionData[i].x < player.x + width / 2 && this.collisionData[i].x + this.collisionData[i].w > player.x - width / 2) {
+                    if (this.collisionData[i].y < player.y + height / 2 && this.collisionData[i].y + this.collisionData[i].h > player.y - height / 2) {
+                        image(this.collisionData[i].tex, this.collisionData[i].x - player.x + width / 2, this.collisionData[i].y - player.y + height / 2, this.collisionData[i].w, this.collisionData[i].h, 0, 0, this.collisionData[i].w, this.collisionData[i].h);
+                    }
+                }
+            }
+            if (this.nameFrame > 0) {
+                textSize(gameWidth * 4);
+                if (this.nameFrame > 81) {
+                    fill(255, 255, 255, 415 - (this.nameFrame * 2));
+                } else {
+                    fill(255);
+                }
+                noStroke();
+                text(this.levelData.name, gameWidth * 2, gameHeight * 80);
+                this.nameFrame++;
+                if (this.nameFrame == 201) {
+                    this.nameFrame = 0;
+                }
+            }
+            noStroke();
             fill(0);
             rect(0, gameHeight*80, width, gameHeight*20);
-            var sprite = loadImage(sceneobj.data[this.progress].sprite);
+            var sprite = loadImage("Sprites/" + sceneobj.data[this.progress].sprite + ".png");
             image(sprite, 0, gameHeight*80 - 200, 200, 200);
             var txt = sceneobj.data[this.progress].txt;
             fill(255);
@@ -77,7 +101,7 @@ class Game {
             var name = sceneobj.data[this.progress].name;
             textSize(gameWidth);
             text(name, 5, gameHeight*80 + 200);
-            if (this.progress == sceneobj[0] - 1) {
+            if (this.progress == sceneobj.data.length - 1) {
                 this.progress = 0;
                 this.state = "active";
                 sceneobj = {};
@@ -168,36 +192,36 @@ class Player {
             if (this.y < 0) {
                 this.y = 0;
             }
-            if (this.x + 20 > game.levelData.w) {
-                this.x = game.levelData.w - 20;
+            if (this.x + 30 > game.levelData.w) {
+                this.x = game.levelData.w - 30;
             }
-            if (this.y + 50 > game.levelData.h) {
-                this.y = game.levelData.h - 50;
+            if (this.y + 60 > game.levelData.h) {
+                this.y = game.levelData.h - 60;
             }
 
             for (var i = 0; i < game.collisionData.length; i++) {
                 if (game.collisionData[i].solid) {
-                    if (this.x + this.xSpeed + 20 > game.collisionData[i].x && this.x + this.xSpeed < game.collisionData[i].x + game.collisionData[i].w) {
-                        if (this.y + 50 > game.collisionData[i].y && this.y < game.collisionData[i].y + game.collisionData[i].h) {
+                    if (this.x + this.xSpeed + 30 > game.collisionData[i].x && this.x + this.xSpeed < game.collisionData[i].x + game.collisionData[i].w) {
+                        if (this.y + 60 > game.collisionData[i].y && this.y < game.collisionData[i].y + game.collisionData[i].h) {
                             if (this.xSpeed > 0) {
-                                this.xSpeed = game.collisionData[i].x - this.x - 20;
+                                this.xSpeed = game.collisionData[i].x - this.x - 30;
                             } else {
                                 this.xSpeed = game.collisionData[i].x + game.collisionData[i].w - this.x;
                             }
                         }
                     }
-                    if (this.y + this.ySpeed + 50 > game.collisionData[i].y && this.y + this.ySpeed < game.collisionData[i].y + game.collisionData[i].h) {
-                        if (this.x + 20 > game.collisionData[i].x && this.x < game.collisionData[i].x + game.collisionData[i].w) {
+                    if (this.y + this.ySpeed + 60 > game.collisionData[i].y && this.y + this.ySpeed < game.collisionData[i].y + game.collisionData[i].h) {
+                        if (this.x + 30 > game.collisionData[i].x && this.x < game.collisionData[i].x + game.collisionData[i].w) {
                             if (this.ySpeed > 0) {
-                                this.ySpeed = game.collisionData[i].y - this.y - 50;
+                                this.ySpeed = game.collisionData[i].y - this.y - 60;
                             } else {
                                 this.ySpeed = game.collisionData[i].y + game.collisionData[i].h - this.y;
                             }
                         }
                     }
                 } else {
-                    if (this.x + 20 > game.collisionData[i].x && this.x < game.collisionData[i].x + game.collisionData[i].w) {
-                        if (this.y + 50 > game.collisionData[i].y && this.y < game.collisionData[i].y + game.collisionData[i].h) {
+                    if (this.x + 30 > game.collisionData[i].x && this.x < game.collisionData[i].x + game.collisionData[i].w) {
+                        if (this.y + 60 > game.collisionData[i].y && this.y < game.collisionData[i].y + game.collisionData[i].h) {
                             game.collisionData[i].func();
                         }
                     }

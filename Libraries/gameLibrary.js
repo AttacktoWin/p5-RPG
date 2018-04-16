@@ -33,8 +33,8 @@ class Game {
         this.nameFrame = 1;
     }
 
-    scene() {
-        game.state = "scene";
+    loadScene(scene) {
+        $("#scene").append("<script src='Scenes/" + scene + ".js'></script>");
     }
 
     display() {
@@ -65,31 +65,7 @@ class Game {
             }
         }
         if (this.state == "scene") {
-            noStroke();
-            image(this.levelData.tex, 0 - player.x + width / 2, 0 - player.y + height / 2, this.levelData.w, this.levelData.h, 0, 0);
-            image(chr, width / 2, height / 2, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
-            for (var i = 0; i < this.collisionData.length; i++) {
-                if (this.collisionData[i].x < player.x + width / 2 && this.collisionData[i].x + this.collisionData[i].w > player.x - width / 2) {
-                    if (this.collisionData[i].y < player.y + height / 2 && this.collisionData[i].y + this.collisionData[i].h > player.y - height / 2) {
-                        image(this.collisionData[i].tex, this.collisionData[i].x - player.x + width / 2, this.collisionData[i].y - player.y + height / 2, this.collisionData[i].w, this.collisionData[i].h, 0, 0, this.collisionData[i].w, this.collisionData[i].h);
-                    }
-                }
-            }
-            if (this.nameFrame > 0) {
-                textSize(gameWidth * 4);
-                if (this.nameFrame > 81) {
-                    fill(255, 255, 255, 415 - (this.nameFrame * 2));
-                } else {
-                    fill(255);
-                }
-                noStroke();
-                text(this.levelData.name, gameWidth * 2, gameHeight * 80);
-                this.nameFrame++;
-                if (this.nameFrame == 201) {
-                    this.nameFrame = 0;
-                }
-            }
-            
+            scene.drawScene();
         }
     }
 }

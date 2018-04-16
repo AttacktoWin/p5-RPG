@@ -3,7 +3,6 @@
 
 // Declare Global Variables
 let gameWidth, gameHeight;
-let sceneobj;
 let game, player;
 let chr;
 

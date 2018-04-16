@@ -19,7 +19,6 @@ class Game {
         this.collisionData = [];
         this.levelData = {};
         this.nameFrame = 0;
-        this.progress = 0;
     }
 
     pause() {

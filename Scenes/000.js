@@ -1,14 +1,18 @@
 game.state = "scene";
+game.progress++;
 let scene = {
     sprites: [
         loadImage('Sprites/theVoid.png'),
         loadImage('Sprites/theVoid1.png')
     ],
+    state: "moving",
+    progress: 0,
     wait: 0,
     disposeScene: function() {
         player.state = "idle";
         game.state = "active";
         $("#scene").empty();
+        scene = undefined;
     },
     drawScene: function() {
         image(game.levelData.tex, 0 - player.x + width / 2, 0 - player.y + height / 2, game.levelData.w, game.levelData.h, 0, 0);
@@ -22,9 +26,18 @@ let scene = {
         }
         fill(0, 0, 0, (255-this.wait*2));
         rect(0, 0, width, height);
-        player.state = "walkR";
-        player.x += gameWidth/2;
-        this.wait++;
+        
+        if (this.state == "moving") {
+            player.state = "walkR";
+            player.x += gameWidth/2;
+            this.wait++;
+        }
+        if (this.wait == 60) {
+            this.state = "input";
+            if (this.progress == 1) {
+                this.state = "moving";
+            }
+        }
         if (this.wait == 120) {
             this.disposeScene();
         }

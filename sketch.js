@@ -40,9 +40,9 @@ function keyPressed() {
         player = new Player("Default");
         game.changeLevel("test");
     }
-    if (game.state == "scene") {
+    if (game.state == "scene" && scene.state == "input") {
         if (keyCode == 32) {
-            game.progress++;
+            scene.progress++;
         }
     }
 }

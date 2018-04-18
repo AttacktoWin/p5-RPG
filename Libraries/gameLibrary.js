@@ -32,12 +32,17 @@ class Game {
         this.nameFrame = 1;
     }
 
+    loadBattle(enemy, type) {
+        this.state = "battleStart";
+
+    }
+
     loadScene(scene) {
         $("#scene").append("<script src='Scenes/" + scene + ".js'></script>");
     }
 
     display() {
-        if (this.state != "start" && this.state != "scene") {
+        if (this.state != "start" && this.state != "scene" && !this.state.includes("battle")) {
             noStroke();
             image(this.levelData.tex, 0 - player.x + width / 2, 0 - player.y + height / 2, this.levelData.w, this.levelData.h, 0, 0);
             image(chr, width / 2, height / 2, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
@@ -74,6 +79,28 @@ class Player {
         this.name = name;
         this.x = gameWidth * 20;
         this.y = gameHeight * 80;
+        this.stats = {
+            hp: 10,
+            maxHp: 10,
+            str: 2,
+            dex: 2,
+            con: 2,
+            rec: 2
+        };
+        this.attacks = [
+            {
+                target: "enemy",
+                name: "Slash",
+                anim: "slash",
+                damage: (this.stats.str * 3) - (enemy.con)
+            },
+            {
+                target: "self",
+                name: "Cure",
+                anim: "heal",
+                damage: -(this.stats.rec * 2) - (this.stats.rec * 0.75)
+            }
+        ]
         this.xSpeed = 0;
         this.ySpeed = 0;
         this.aFrame = 0;
@@ -332,5 +359,25 @@ class Player {
             this.aFrame = 0;
         }
         this.aFrame++;
+    }
+}
+
+class Battle {
+    constructor(enemy, bg) {
+        this.state = "active";
+        this.enemy = enemy;
+        this.active = {
+            x: 500,
+            y: 390
+        };
+        this.bg = bg;
+    }
+
+    logic() {
+
+    }
+
+    show() {
+        image(bg, 0, 0);
     }
 }

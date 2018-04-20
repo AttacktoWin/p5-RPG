@@ -7,7 +7,7 @@ let game, player;
 let chr;
 
 function preload() {
-    chr = loadImage('Sprites/tempSpritesheet.png');
+    chr = loadImage('Sprites/SpriteSheet2.png');
 }
 
 // SETUP FUNCTION - Runs once at beginning of program
@@ -49,6 +49,22 @@ function keyPressed() {
 
 function keyReleased() {
     if (game.state == "active") {
-        player.state = "idle";
+        if (player.state == "walkUL") {
+            player.state = "idleUL";
+        } else if (player.state == "walkUR") {
+            player.state = "idleUR";
+        } else if (player.state == "walkDL") {
+            player.state = "idleDL";
+        } else if (player.state == "walkDR") {
+            player.state = "idleDR";
+        } else if (player.state == "walkU") {
+            player.state = "idleU";
+        } else if (player.state == "walkD") {
+            player.state = "idleD";
+        } else if (player.state == "walkL") {
+            player.state = "idleL";
+        } else if (player.state == "walkR") {
+            player.state = "idleR";
+        }
     }
 }

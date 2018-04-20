@@ -1,15 +1,17 @@
 game.state = "scene";
-game.progress++;
+
 let scene = {
-    sprites: [
-        loadImage('Sprites/theVoid.png'),
-        loadImage('Sprites/theVoid1.png')
+    sceneobj: [
+        { txt: "Hello, There!", img: loadImage('Sprites/theVoid.png'), name: "The Void" },
+        { txt: "Welcome to the Void!", img: loadImage('Sprites/theVoid.png'), name: "The Void" },
+        { txt: "You're here forever!", img: loadImage('Sprites/theVoid1.png'), name: "The Void" }
     ],
+    dProgress: 0,
     state: "moving",
     progress: 0,
     wait: 0,
     disposeScene: function() {
-        player.state = "idle";
+        player.state = "idleR";
         game.state = "active";
         $("#scene").empty();
         scene = undefined;
@@ -34,7 +36,14 @@ let scene = {
         }
         if (this.wait == 60) {
             this.state = "input";
+            game.dialogue(this.sceneobj);
             if (this.progress == 1) {
+                this.dProgress = 1;
+            }
+            if (this.progress == 2) {
+                this.dProgress = 2;
+            }
+            if (this.progress == 3) {
                 this.state = "moving";
             }
         }

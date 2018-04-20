@@ -41,6 +41,20 @@ class Game {
         $("#scene").append("<script src='Scenes/" + scene + ".js'></script>");
     }
 
+    dialogue(arr) {
+        noStroke();
+        fill(0, 0, 0, 200);
+        rect(0, gameHeight*80, width, gameHeight*20);
+        rect(0, gameHeight*78, gameWidth*20, gameHeight*2);
+        fill(255);
+        textAlign(LEFT);
+        textSize(gameWidth*3);
+        text(arr[scene.dProgress].txt, gameWidth, gameHeight*85);
+        image(arr[scene.dProgress].img, 0, gameHeight*61.5);
+        textSize(gameWidth*2);
+        text(arr[scene.dProgress].name, gameWidth, gameHeight*80.5);
+    }
+
     display() {
         if (this.state != "start" && this.state != "scene" && !this.state.includes("battle")) {
             noStroke();
@@ -92,13 +106,17 @@ class Player {
                 target: "enemy",
                 name: "Slash",
                 anim: "slash",
-                damage: (this.stats.str * 3) - (enemy.con)
+                damage: function (enemy) {
+                    return((this.stats.str * 3) - (enemy.con));
+                }
             },
             {
                 target: "self",
                 name: "Cure",
                 anim: "heal",
-                damage: -(this.stats.rec * 2) - (this.stats.rec * 0.75)
+                damage: function () {
+                    this.hp -= (-(this.stats.rec * 2) - (this.stats.rec * 0.75));
+                }
             }
         ]
         this.xSpeed = 0;
@@ -225,137 +243,197 @@ class Player {
     animate() {
         if (this.state == "walkU") {
             this.currentFrame.y = 1;
-            if (this.aFrame < 11) {
+            if (this.aFrame < 6) {
                 this.currentFrame.x = 0;
-            } else if (this.aFrame < 21) {
+            } else if (this.aFrame < 11) {
                 this.currentFrame.x = 1;
-            } else if (this.aFrame < 31) {
+            } else if (this.aFrame < 16) {
                 this.currentFrame.x = 2;
-            } else if (this.aFrame < 41) {
+            } else if (this.aFrame < 21) {
                 this.currentFrame.x = 3;
-            } else if (this.aFrame < 51) {
+            } else if (this.aFrame < 26) {
                 this.currentFrame.x = 4;
-            } else if (this.aFrame < 61) {
+            } else if (this.aFrame < 31) {
                 this.currentFrame.x = 5;
+            } else if (this.aFrame < 36) {
+                this.currentFrame.x = 6;
+            } else if (this.aFrame < 41) {
+                this.currentFrame.x = 7;
             }
         }
         if (this.state == "walkD") {
-            this.currentFrame.y = 1;
-            if (this.aFrame < 11) {
-                this.currentFrame.x = 6;
-            } else if (this.aFrame < 21) {
-                this.currentFrame.x = 7;
-            } else if (this.aFrame < 31) {
+            this.currentFrame.y = 0;
+            if (this.aFrame < 6) {
                 this.currentFrame.x = 8;
-            } else if (this.aFrame < 41) {
+            } else if (this.aFrame < 11) {
                 this.currentFrame.x = 9;
-            } else if (this.aFrame < 51) {
+            } else if (this.aFrame < 16) {
                 this.currentFrame.x = 10;
-            } else if (this.aFrame < 61) {
+            } else if (this.aFrame < 21) {
                 this.currentFrame.x = 11;
+            } else if (this.aFrame < 26) {
+                this.currentFrame.x = 12;
+            } else if (this.aFrame < 31) {
+                this.currentFrame.x = 13;
+            } else if (this.aFrame < 36) {
+                this.currentFrame.x = 14
+            } else if (this.aFrame < 41) {
+                this.currentFrame.x = 15
             }
         }
         if (this.state == "walkL") {
-            this.currentFrame.y = 0;
-            if (this.aFrame < 11) {
-                this.currentFrame.x = 1;
+            this.currentFrame.y = 1;
+            if (this.aFrame < 6) {
+                this.currentFrame.x = 8;
+            } else if (this.aFrame < 11) {
+                this.currentFrame.x = 9;
+            } else if (this.aFrame < 16) {
+                this.currentFrame.x = 10;
             } else if (this.aFrame < 21) {
-                this.currentFrame.x = 2;
+                this.currentFrame.x = 11;
+            } else if (this.aFrame < 26) {
+                this.currentFrame.x = 12;
             } else if (this.aFrame < 31) {
-                this.currentFrame.x = 3;
+                this.currentFrame.x = 13;
+            } else if (this.aFrame < 36) {
+                this.currentFrame.x = 14
             } else if (this.aFrame < 41) {
-                this.currentFrame.x = 4;
-            } else if (this.aFrame < 51) {
-                this.currentFrame.x = 5;
-            } else if (this.aFrame < 61) {
-                this.currentFrame.x = 6;
+                this.currentFrame.x = 15
             }
         }
         if (this.state == "walkR") {
-            this.currentFrame.y = 0;
-            if (this.aFrame < 11) {
-                this.currentFrame.x = 7;
+            this.currentFrame.y = 2;
+            if (this.aFrame < 6) {
+                this.currentFrame.x = 0;
+            } else if (this.aFrame < 11) {
+                this.currentFrame.x = 1;
+            } else if (this.aFrame < 16) {
+                this.currentFrame.x = 2;
             } else if (this.aFrame < 21) {
-                this.currentFrame.x = 8;
+                this.currentFrame.x = 3;
+            } else if (this.aFrame < 26) {
+                this.currentFrame.x = 4;
             } else if (this.aFrame < 31) {
-                this.currentFrame.x = 9;
+                this.currentFrame.x = 5;
+            } else if (this.aFrame < 36) {
+                this.currentFrame.x = 6;
             } else if (this.aFrame < 41) {
-                this.currentFrame.x = 10;
-            } else if (this.aFrame < 51) {
-                this.currentFrame.x = 11;
-            } else if (this.aFrame < 61) {
-                this.currentFrame.x = 12;
+                this.currentFrame.x = 7;
             }
         }
         if (this.state == "walkUL" || this.state == "walkUR") {
-            this.currentFrame.y = 2;
+            this.currentFrame.y = 3;
             if (this.state == "walkUL") {
-                if (this.aFrame < 11) {
+                if (this.aFrame < 6) {
                     this.currentFrame.x = 0;
-                } else if (this.aFrame < 21) {
+                } else if (this.aFrame < 11) {
                     this.currentFrame.x = 1;
-                } else if (this.aFrame < 31) {
+                } else if (this.aFrame < 16) {
                     this.currentFrame.x = 2;
-                } else if (this.aFrame < 41) {
+                } else if (this.aFrame < 21) {
                     this.currentFrame.x = 3;
-                } else if (this.aFrame < 51) {
+                } else if (this.aFrame < 26) {
                     this.currentFrame.x = 4;
-                } else if (this.aFrame < 61) {
+                } else if (this.aFrame < 31) {
                     this.currentFrame.x = 5;
+                } else if (this.aFrame < 36) {
+                    this.currentFrame.x = 6;
+                } else if (this.aFrame < 41) {
+                    this.currentFrame.x = 7;
                 }
             } else if (this.state == "walkUR") {
-                if (this.aFrame < 11) {
-                    this.currentFrame.x = 6;
-                } else if (this.aFrame < 21) {
-                    this.currentFrame.x = 7;
-                } else if (this.aFrame < 31) {
+                if (this.aFrame < 6) {
                     this.currentFrame.x = 8;
-                } else if (this.aFrame < 41) {
+                } else if (this.aFrame < 11) {
                     this.currentFrame.x = 9;
-                } else if (this.aFrame < 51) {
+                } else if (this.aFrame < 16) {
                     this.currentFrame.x = 10;
-                } else if (this.aFrame < 61) {
+                } else if (this.aFrame < 21) {
                     this.currentFrame.x = 11;
+                } else if (this.aFrame < 26) {
+                    this.currentFrame.x = 12;
+                } else if (this.aFrame < 31) {
+                    this.currentFrame.x = 13;
+                } else if (this.aFrame < 36) {
+                    this.currentFrame.x = 14
+                } else if (this.aFrame < 41) {
+                    this.currentFrame.x = 15
                 }
             }
         }
         if (this.state == "walkDL" || this.state == "walkDR") {
-            this.currentFrame.y = 3;
+            this.currentFrame.y = 4;
             if (this.state == "walkDL") {
-                if (this.aFrame < 11) {
+                if (this.aFrame < 6) {
                     this.currentFrame.x = 0;
-                } else if (this.aFrame < 21) {
+                } else if (this.aFrame < 11) {
                     this.currentFrame.x = 1;
-                } else if (this.aFrame < 31) {
+                } else if (this.aFrame < 16) {
                     this.currentFrame.x = 2;
-                } else if (this.aFrame < 41) {
+                } else if (this.aFrame < 21) {
                     this.currentFrame.x = 3;
-                } else if (this.aFrame < 51) {
+                } else if (this.aFrame < 26) {
                     this.currentFrame.x = 4;
-                } else if (this.aFrame < 61) {
+                } else if (this.aFrame < 31) {
                     this.currentFrame.x = 5;
+                } else if (this.aFrame < 36) {
+                    this.currentFrame.x = 6;
+                } else if (this.aFrame < 41) {
+                    this.currentFrame.x = 7;
                 }
             } else if (this.state == "walkDR") {
-                if (this.aFrame < 11) {
-                    this.currentFrame.x = 6;
-                } else if (this.aFrame < 21) {
-                    this.currentFrame.x = 7;
-                } else if (this.aFrame < 31) {
+                if (this.aFrame < 6) {
                     this.currentFrame.x = 8;
-                } else if (this.aFrame < 41) {
+                } else if (this.aFrame < 11) {
                     this.currentFrame.x = 9;
-                } else if (this.aFrame < 51) {
+                } else if (this.aFrame < 16) {
                     this.currentFrame.x = 10;
-                } else if (this.aFrame < 61) {
+                } else if (this.aFrame < 21) {
                     this.currentFrame.x = 11;
+                } else if (this.aFrame < 26) {
+                    this.currentFrame.x = 12;
+                } else if (this.aFrame < 31) {
+                    this.currentFrame.x = 13;
+                } else if (this.aFrame < 36) {
+                    this.currentFrame.x = 14
+                } else if (this.aFrame < 41) {
+                    this.currentFrame.x = 15
                 }
             }
         }
-        if (this.state == "idle") {
+        if (this.state == "idleD") {
             this.currentFrame.y = 0;
             this.currentFrame.x = 0;
         }
-        if (this.aFrame > 60) {
+        if (this.state == "idleU") {
+            this.currentFrame.y = 0;
+            this.currentFrame.x = 1;
+        }
+        if (this.state == "idleL") {
+            this.currentFrame.y = 0;
+            this.currentFrame.x = 2;
+        }
+        if (this.state == "idleR") {
+            this.currentFrame.y = 0;
+            this.currentFrame.x = 3;
+        }
+        if (this.state == "idleDL") {
+            this.currentFrame.y = 0;
+            this.currentFrame.x = 4;
+        }
+        if (this.state == "idleDR") {
+            this.currentFrame.y = 0;
+            this.currentFrame.x = 5;
+        }
+        if (this.state == "idleUL") {
+            this.currentFrame.y = 0;
+            this.currentFrame.x = 6;
+        }
+        if (this.state == "idleUR") {
+            this.currentFrame.y = 0;
+            this.currentFrame.x = 7;
+        }
+        if (this.aFrame > 40) {
             this.aFrame = 0;
         }
         this.aFrame++;

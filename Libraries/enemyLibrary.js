@@ -11,13 +11,17 @@ class voidBoss {
                 target: "self",
                 name: "Heal",
                 anim: "heal",
-                damage: -(this.rec * (this.rec*0.7))
+                damage: function () {
+                    this.hp -= (-(this.rec * (this.rec*0.7)));
+                }
             },
             {
                 target: "player",
                 name: "Desolation",
                 anim: "voidAttack",
-                damage: (this.str * 5) - (player.stats.con * 2)
+                damage: function () {
+                    return((this.str * 5) - (player.stats.con * 2));
+                }
             }
         ]
     }

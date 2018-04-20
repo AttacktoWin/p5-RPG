@@ -19,7 +19,6 @@ class Game {
         this.collisionData = [];
         this.levelData = {};
         this.nameFrame = 0;
-        this.progress = 0;
     }
 
     pause() {
@@ -33,12 +32,17 @@ class Game {
         this.nameFrame = 1;
     }
 
-    scene() {
-        game.state = "scene";
+    loadBattle(enemy, type) {
+        this.state = "battleStart";
+
+    }
+
+    loadScene(scene) {
+        $("#scene").append("<script src='Scenes/" + scene + ".js'></script>");
     }
 
     display() {
-        if (this.state != "start" && this.state != "scene") {
+        if (this.state != "start" && this.state != "scene" && !this.state.includes("battle")) {
             noStroke();
             image(this.levelData.tex, 0 - player.x + width / 2, 0 - player.y + height / 2, this.levelData.w, this.levelData.h, 0, 0);
             image(chr, width / 2, height / 2, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
@@ -65,47 +69,7 @@ class Game {
             }
         }
         if (this.state == "scene") {
-            noStroke();
-            image(this.levelData.tex, 0 - player.x + width / 2, 0 - player.y + height / 2, this.levelData.w, this.levelData.h, 0, 0);
-            image(chr, width / 2, height / 2, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
-            for (var i = 0; i < this.collisionData.length; i++) {
-                if (this.collisionData[i].x < player.x + width / 2 && this.collisionData[i].x + this.collisionData[i].w > player.x - width / 2) {
-                    if (this.collisionData[i].y < player.y + height / 2 && this.collisionData[i].y + this.collisionData[i].h > player.y - height / 2) {
-                        image(this.collisionData[i].tex, this.collisionData[i].x - player.x + width / 2, this.collisionData[i].y - player.y + height / 2, this.collisionData[i].w, this.collisionData[i].h, 0, 0, this.collisionData[i].w, this.collisionData[i].h);
-                    }
-                }
-            }
-            if (this.nameFrame > 0) {
-                textSize(gameWidth * 4);
-                if (this.nameFrame > 81) {
-                    fill(255, 255, 255, 415 - (this.nameFrame * 2));
-                } else {
-                    fill(255);
-                }
-                noStroke();
-                text(this.levelData.name, gameWidth * 2, gameHeight * 80);
-                this.nameFrame++;
-                if (this.nameFrame == 201) {
-                    this.nameFrame = 0;
-                }
-            }
-            noStroke();
-            fill(0);
-            rect(0, gameHeight*80, width, gameHeight*20);
-            var sprite = loadImage("Sprites/" + sceneobj.data[this.progress].sprite + ".png");
-            image(sprite, 0, gameHeight*80 - 200, 200, 200);
-            var txt = sceneobj.data[this.progress].txt;
-            fill(255);
-            textSize(gameWidth*2);
-            text(txt, 10, gameHeight*81 + 200);
-            var name = sceneobj.data[this.progress].name;
-            textSize(gameWidth);
-            text(name, 5, gameHeight*80 + 200);
-            if (this.progress == sceneobj.data.length - 1) {
-                this.progress = 0;
-                this.state = "active";
-                sceneobj = {};
-            }
+            scene.drawScene();
         }
     }
 }
@@ -115,6 +79,28 @@ class Player {
         this.name = name;
         this.x = gameWidth * 20;
         this.y = gameHeight * 80;
+        this.stats = {
+            hp: 10,
+            maxHp: 10,
+            str: 2,
+            dex: 2,
+            con: 2,
+            rec: 2
+        };
+        this.attacks = [
+            {
+                target: "enemy",
+                name: "Slash",
+                anim: "slash",
+                damage: (this.stats.str * 3) - (enemy.con)
+            },
+            {
+                target: "self",
+                name: "Cure",
+                anim: "heal",
+                damage: -(this.stats.rec * 2) - (this.stats.rec * 0.75)
+            }
+        ]
         this.xSpeed = 0;
         this.ySpeed = 0;
         this.aFrame = 0;
@@ -373,5 +359,25 @@ class Player {
             this.aFrame = 0;
         }
         this.aFrame++;
+    }
+}
+
+class Battle {
+    constructor(enemy, bg) {
+        this.state = "active";
+        this.enemy = enemy;
+        this.active = {
+            x: 500,
+            y: 390
+        };
+        this.bg = bg;
+    }
+
+    logic() {
+
+    }
+
+    show() {
+        image(bg, 0, 0);
     }
 }

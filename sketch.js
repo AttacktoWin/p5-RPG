@@ -26,9 +26,6 @@ function draw() {
     if (game.state == "active") {
         player.move();
     }
-    if (game.state != "start") {
-        player.animate();
-    }
     // DRAW FRAME
     background(0);
     game.display();

@@ -36,6 +36,7 @@ let scene = {
         }
         if (this.wait == 60) {
             this.state = "input";
+            player.state = "idleR";
             game.dialogue(this.sceneobj);
             if (this.progress == 1) {
                 this.dProgress = 1;
@@ -45,10 +46,12 @@ let scene = {
             }
             if (this.progress == 3) {
                 this.state = "moving";
+                player.state = "walkR";
             }
         }
         if (this.wait == 120) {
             this.disposeScene();
+            game.loadBattle(new voidBoss(), loadImage('Sprites/test01Battle.png'));
         }
     }
 }

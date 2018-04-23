@@ -19,6 +19,7 @@ class Game {
         this.collisionData = [];
         this.levelData = {};
         this.nameFrame = 0;
+        this.battle = {};
     }
 
     pause() {
@@ -32,9 +33,9 @@ class Game {
         this.nameFrame = 1;
     }
 
-    loadBattle(enemy, type) {
+    loadBattle(enemy, bg, type) {
         this.state = "battleStart";
-
+        this.battle = new Battle(enemy, bg);
     }
 
     loadScene(scene) {
@@ -59,6 +60,7 @@ class Game {
         if (this.state != "start" && this.state != "scene" && !this.state.includes("battle")) {
             noStroke();
             image(this.levelData.tex, 0 - player.x + width / 2, 0 - player.y + height / 2, this.levelData.w, this.levelData.h, 0, 0);
+            player.animate();
             image(chr, width / 2, height / 2, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
             for (var i = 0; i < this.collisionData.length; i++) {
                 if (this.collisionData[i].x < player.x + width / 2 && this.collisionData[i].x + this.collisionData[i].w > player.x - width / 2) {
@@ -84,6 +86,11 @@ class Game {
         }
         if (this.state == "scene") {
             scene.drawScene();
+            player.animate();
+        }
+        if (this.state.contains("battle")) {
+            this.battle.logic();
+            this.battle.display();
         }
     }
 }
@@ -445,8 +452,8 @@ class Battle {
         this.state = "active";
         this.enemy = enemy;
         this.active = {
-            x: 500,
-            y: 390
+            x: 580,
+            y: 480
         };
         this.bg = bg;
     }
@@ -455,7 +462,9 @@ class Battle {
 
     }
 
-    show() {
-        image(bg, 0, 0);
+    display() {
+        image(this.bg, 0, 0);
+        player.state = "idleL";
+        image(chr, this.active.x, this.active.y, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
     }
 }

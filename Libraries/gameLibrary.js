@@ -89,8 +89,8 @@ class Game {
             player.animate();
         }
         if (this.state.contains("battle")) {
-            this.battle.logic();
             this.battle.display();
+            this.battle.logic();
         }
     }
 }
@@ -459,12 +459,25 @@ class Battle {
     }
 
     logic() {
-
+        if (this.state == "active") {
+            fill("#FF6A00");
+            rect(640, 135, 160, 195);
+        }
     }
 
     display() {
+        noStroke();
         image(this.bg, 0, 0);
         player.state = "idleL";
         image(chr, this.active.x, this.active.y, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
+        fill(255);
+        rect(0, 0, 300, 90);
+        image(this.enemy.icon, 0, 0, 70, 90);
+        textSize(20);
+        fill(0);
+        text(this.enemy.name, 85, 22);
+        fill(255);
+        rect(500, 0, 300, 90);
+        fill(255);
     }
 }

@@ -11,7 +11,7 @@ let scene = {
     progress: 0,
     wait: 0,
     disposeScene: function() {
-        player.state = "idleR";
+        player.state = "idleL";
         game.state = "active";
         $("#scene").empty();
         scene = undefined;

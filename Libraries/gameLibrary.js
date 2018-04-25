@@ -88,7 +88,7 @@ class Game {
             scene.drawScene();
             player.animate();
         }
-        if (this.state.contains("battle")) {
+        if (this.state.includes("battle")) {
             this.battle.display();
             this.battle.logic();
         }
@@ -98,6 +98,10 @@ class Game {
 class Player {
     constructor(name) {
         this.name = name;
+        if (this.name == null || this.name == "") {
+            this.name = "Default";
+        }
+        this.sprite = loadImage('Sprites/Player.png');
         this.x = gameWidth * 20;
         this.y = gameHeight * 80;
         this.stats = {
@@ -463,6 +467,36 @@ class Battle {
             fill("#FF6A00");
             rect(640, 135, 160, 195);
         }
+        stroke(0);
+        strokeWeight(2);
+        noFill();
+        rect(85, 50, 150, 20);
+        if (this.enemy.hp < this.enemy.maxHp/2) {
+            if (this.enemy.hp < this.enemy.maxHp/10) {
+                fill("red");
+            } else {
+                fill("blue");
+            }
+        } else {
+            fill("green");
+        }
+        noStroke();
+        rect(85, 51, map(this.enemy.hp, -1, this.enemy.maxHp, 0, 149), 18);
+        stroke(0);
+        strokeWeight(2);
+        noFill();
+        rect(525, 50, 150, 20);
+        if (player.stats.hp < player.stats.maxHp/2) {
+            if (player.hp < player.maxHp/10) {
+                fill("red");
+            } else {
+                fill("blue");
+            }
+        } else {
+            fill("green");
+        }
+        noStroke();
+        rect(525, 51, map(player.stats.hp, -1, player.stats.maxHp, 0, 149), 18);
     }
 
     display() {
@@ -472,12 +506,16 @@ class Battle {
         image(chr, this.active.x, this.active.y, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
         fill(255);
         rect(0, 0, 300, 90);
+        rect(500, 0, 300, 90);
         image(this.enemy.icon, 0, 0, 70, 90);
+        image(player.sprite, width-70, 0, 70, 90);
         textSize(20);
         fill(0);
         text(this.enemy.name, 85, 22);
-        fill(255);
-        rect(500, 0, 300, 90);
-        fill(255);
+        textSize(15);
+        text("Lv. "  + this.enemy.level, 250, 17);    
+        fill(0);
+        textSize(20);
+        text(player.name, 525, 22);
     }
 }

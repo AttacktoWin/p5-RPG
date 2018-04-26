@@ -33,8 +33,9 @@ function draw() {
 
 function keyPressed() {
     if (keyCode == 13) {
+        var name = prompt("Enter a name", "Default");
         game.state = "active";
-        player = new Player("Default");
+        player = new Player(name);
         game.changeLevel("test");
     }
     if (game.state == "scene" && scene.state == "input") {

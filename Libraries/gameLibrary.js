@@ -45,15 +45,15 @@ class Game {
     dialogue(arr) {
         noStroke();
         fill(0, 0, 0, 200);
-        rect(0, gameHeight*80, width, gameHeight*20);
-        rect(0, gameHeight*78, gameWidth*20, gameHeight*2);
+        rect(0, gameHeight * 80, width, gameHeight * 20);
+        rect(0, gameHeight * 78, gameWidth * 20, gameHeight * 2);
         fill(255);
         textAlign(LEFT);
-        textSize(gameWidth*3);
-        text(arr[scene.dProgress].txt, gameWidth, gameHeight*85);
-        image(arr[scene.dProgress].img, 0, gameHeight*61.5);
-        textSize(gameWidth*2);
-        text(arr[scene.dProgress].name, gameWidth, gameHeight*80.5);
+        textSize(gameWidth * 3);
+        text(arr[scene.dProgress].txt, gameWidth, gameHeight * 85);
+        image(arr[scene.dProgress].img, 0, gameHeight * 61.5);
+        textSize(gameWidth * 2);
+        text(arr[scene.dProgress].name, gameWidth, gameHeight * 80.5);
     }
 
     display() {
@@ -112,28 +112,27 @@ class Player {
             con: 2,
             rec: 2
         };
-        this.attacks = [
-            {
-                target: "enemy",
-                name: "Slash",
-                anim: "slash",
-                damage: function (enemy) {
-                    return((this.stats.str * 3) - (enemy.con));
-                }
-            },
-            {
-                target: "self",
-                name: "Cure",
-                anim: "heal",
-                damage: function () {
-                    this.hp -= (-(this.stats.rec * 2) - (this.stats.rec * 0.75));
-                }
+        this.attacks = [{
+            target: "enemy",
+            name: "Slash",
+            anim: "slash",
+            damage: function (enemy) {
+                return ((this.stats.str * 3) - (enemy.con));
             }
-        ]
+        }];
+        this.magic = [{
+            target: "self",
+            name: "Cure",
+            anim: "heal",
+            damage: function () {
+                this.hp -= (-(this.stats.rec * 2) - (this.stats.rec * 0.75));
+            }
+        }];
+        this.items = ["null1", "null2", "null3", "null4", "null5", "null6"];
         this.xSpeed = 0;
         this.ySpeed = 0;
         this.aFrame = 0;
-        this.state = "walkR";
+        this.state = "idleR";
         this.currentFrame = {
             x: 0,
             y: 0
@@ -455,24 +454,81 @@ class Battle {
     constructor(enemy, bg) {
         this.state = "active";
         this.enemy = enemy;
-        this.active = {
-            x: 580,
-            y: 480
-        };
+        this.active = "commands";
+        this.select = [0, 0];
         this.bg = bg;
     }
 
     logic() {
         if (this.state == "active") {
+            if (this.select[0] < 0) {
+                this.select[0] = 3;
+            } else if (this.select[0] > 3) {
+                this.select[0] = 0;
+            }
             fill("#FF6A00");
-            rect(640, 135, 160, 195);
+            rect(640, 138, 160, 195);
+            noFill();
+            stroke(255);
+            strokeWeight(4);
+            rect(642, 140 + (this.select[0] * 48), 156, 48);
+            fill(255);
+            noStroke();
+            textSize(20);
+            textAlign(CENTER);
+            text("Attacks", 720, 170);
+            text("Magic", 720, 220);
+            text("Items", 720, 270);
+            text("Run", 720, 320);
+            if (this.active != "commands") {
+                fill("#FF6A00");
+                noStroke();
+                rect(480, 138, 160, 195);
+                if (this.active == "attacks") {
+                    if (this.select[1] > player.attacks.length - 1) {
+                        this.select[1] = 0;
+                    }
+                    if (this.select[1] < 0) {
+                        this.select[1] = player.attacks.length - 1;
+                    }
+                    fill(255);
+                    noStroke();
+                    textSize(20);
+                    textAlign(LEFT);
+                    for (var i = 0; i < player.attacks.length; i++) {
+                        text(player.attacks[i].name, 490, 170 + (i * 50));
+                    }
+                } else if (this.active == "magic") {
+                    if (this.select[1] > player.magic.length - 1) {
+                        this.select[1] = 0;
+                    }
+                    if (this.select[1] < 0) {
+                        this.select[1] = player.magic.length - 1;
+                    }
+                    fill(255);
+                    noStroke();
+                    textSize(20);
+                    textAlign(LEFT);
+                    for (var i = 0; i < player.magic.length; i++) {
+                        text(player.magic[i].name, 490, 170 + (i * 50));
+                    }
+                } else if (this.active == "items") {
+                    if (this.select[1] > player.magic.length - 1) {
+                        this.select[1] = 0;
+                    }
+                    if (this.select[1] < 0) {
+                        this.select[1] = player.items.length - 1;
+                    }
+                }
+            }
         }
+        textAlign(LEFT);
         stroke(0);
         strokeWeight(2);
         noFill();
         rect(85, 50, 150, 20);
-        if (this.enemy.hp < this.enemy.maxHp/2) {
-            if (this.enemy.hp < this.enemy.maxHp/10) {
+        if (this.enemy.hp < this.enemy.maxHp / 2) {
+            if (this.enemy.hp < this.enemy.maxHp / 10) {
                 fill("red");
             } else {
                 fill("blue");
@@ -486,8 +542,12 @@ class Battle {
         strokeWeight(2);
         noFill();
         rect(525, 50, 150, 20);
-        if (player.stats.hp < player.stats.maxHp/2) {
-            if (player.hp < player.maxHp/10) {
+        fill(0);
+        noStroke();
+        textSize(12);
+        text(this.enemy.hp + "/" + this.enemy.maxHp, 220, 85);
+        if (player.stats.hp < player.stats.maxHp / 2) {
+            if (player.hp < player.maxHp / 10) {
                 fill("red");
             } else {
                 fill("blue");
@@ -497,25 +557,54 @@ class Battle {
         }
         noStroke();
         rect(525, 51, map(player.stats.hp, -1, player.stats.maxHp, 0, 149), 18);
+        fill(0);
+        noStroke();
+        textSize(12);
+        text(player.stats.hp + "/" + player.stats.maxHp, 645, 85);
+        if (this.enemy.hp == 0) {
+            this.victory();
+        }
+        if (player.stats.hp == 0) {
+            this.defeat();
+        }
+
+        if (this.active != "commands") {
+            noFill();
+            stroke(255);
+            strokeWeight(4);
+            rect(482, 140 + (this.select[1] * 48), 156, 48);
+        }
     }
 
     display() {
         noStroke();
         image(this.bg, 0, 0);
         player.state = "idleL";
-        image(chr, this.active.x, this.active.y, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
+        image(chr, 580, 480, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
         fill(255);
         rect(0, 0, 300, 90);
         rect(500, 0, 300, 90);
         image(this.enemy.icon, 0, 0, 70, 90);
-        image(player.sprite, width-70, 0, 70, 90);
+        image(player.sprite, width - 70, 0, 70, 90);
         textSize(20);
         fill(0);
         text(this.enemy.name, 85, 22);
         textSize(15);
-        text("Lv. "  + this.enemy.level, 250, 17);    
+        text("Lv. " + this.enemy.level, 250, 17);
         fill(0);
         textSize(20);
         text(player.name, 525, 22);
+    }
+
+    defeat() {
+
+    }
+
+    victory() {
+
+    }
+
+    run() {
+
     }
 }

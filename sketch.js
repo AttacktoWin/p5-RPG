@@ -5,6 +5,7 @@
 let gameWidth, gameHeight;
 let game, player;
 let chr;
+let debug = false;
 
 function preload() {
     chr = loadImage('Sprites/SpriteSheet2.png');
@@ -15,8 +16,8 @@ function setup() {
     createCanvas(800, 600);
 
     // Initialize Global Variables
-    gameWidth = (width/100);
-    gameHeight = (height/100);
+    gameWidth = (width / 100);
+    gameHeight = (height / 100);
     game = new Game();
 }
 
@@ -29,18 +30,63 @@ function draw() {
     // DRAW FRAME
     background(0);
     game.display();
+    if (debug) {
+        console.log("X: " + mouseX + ", Y: " + mouseY);
+    }
 }
 
 function keyPressed() {
     if (keyCode == 13) {
-        var name = prompt("Enter a name", "Default");
-        game.state = "active";
-        player = new Player(name);
-        game.changeLevel("test");
+        if (game.state == "start") {
+            var name = prompt("Enter a name", "Default");
+            game.state = "active";
+            player = new Player(name);
+            game.changeLevel("test");
+        }
     }
     if (game.state == "scene" && scene.state == "input") {
         if (keyCode == 32) {
             scene.progress++;
+        }
+    }
+    if (game.state.includes("battle") && game.battle.state == "active") {
+        if (keyCode == 83) {
+            if (game.battle.active == "commands") {
+                game.battle.select[0] += 1;
+            } else {
+                game.battle.select[1] += 1;
+            }
+        }
+        if (keyCode == 87) {
+            if (game.battle.active == "commands") {
+                game.battle.select[0] -= 1;
+            } else {
+                game.battle.select[1] -= 1;
+            }
+        }
+
+        if (keyCode == 13) {
+            if (game.battle.active == "commands") {
+                if (game.battle.select[0] == 0) {
+                    game.battle.select[1] = 0;
+                    game.battle.active = "attacks";
+                } else if (game.battle.select[0] == 1) {
+                    game.battle.select[1] = 0;
+                    game.battle.active = "magic";
+                } else if (game.battle.select[0] == 2) {
+                    game.battle.select[1] = 0;
+                    game.battle.active = "items";
+                } else if (game.battle.select[0] == 3) {
+                    game.battle.run();
+                }
+            }
+        }
+
+        if (keyCode == 8) {
+            if (game.battle.active != "commands") {
+                game.battle.active = "commands";
+                game.battle.select[1] = 0;
+            }
         }
     }
 }

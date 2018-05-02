@@ -38,8 +38,17 @@ class Game {
         this.battle = new Battle(enemy, bg);
     }
 
+    disposeBattle(state) {
+        this.state = state;
+        this.battle = undefined;
+    }
+
     loadScene(scene) {
         $("#scene").append("<script src='Scenes/" + scene + ".js'></script>");
+    }
+
+    damage(active, target) {
+
     }
 
     dialogue(arr) {
@@ -93,6 +102,12 @@ class Game {
             this.battle.logic();
         }
     }
+
+    logic() {
+        if (player.stats.hp > player.stats.maxHp) {
+            player.stats.hp = player.stats.maxHp;
+        }
+    }
 }
 
 class Player {
@@ -128,7 +143,7 @@ class Player {
                 this.hp -= (-(this.stats.rec * 2) - (this.stats.rec * 0.75));
             }
         }];
-        this.items = [{name: "null1"}, {name: "null2"}, {name: "null3"}, {name: "null4"}, {name: "null5"}, {name: "null6"}];
+        this.items = [{name: "null1", func: function(){player.stats.hp+= 1}}, {name: "null2"}, {name: "null3"}, {name: "null4"}, {name: "null5"}, {name: "null6"}];
         this.xSpeed = 0;
         this.ySpeed = 0;
         this.aFrame = 0;
@@ -632,5 +647,6 @@ class Battle {
                 this.state = "active";
             }
         }
+        
     }
 }

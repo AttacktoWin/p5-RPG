@@ -2,6 +2,7 @@ class voidBoss {
     constructor() {
         this.icon = loadImage('Sprites/VoidBossico.png');
         this.name = "The Void";
+        this.boss = true;
         this.level = 99;
         this.str = 1;
         this.dex = 1;

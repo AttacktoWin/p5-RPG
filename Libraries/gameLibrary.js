@@ -38,8 +38,17 @@ class Game {
         this.battle = new Battle(enemy, bg);
     }
 
+    disposeBattle(state) {
+        this.state = state;
+        this.battle = undefined;
+    }
+
     loadScene(scene) {
         $("#scene").append("<script src='Scenes/" + scene + ".js'></script>");
+    }
+
+    damage(active, target) {
+
     }
 
     dialogue(arr) {
@@ -93,6 +102,12 @@ class Game {
             this.battle.logic();
         }
     }
+
+    logic() {
+        if (player.stats.hp > player.stats.maxHp) {
+            player.stats.hp = player.stats.maxHp;
+        }
+    }
 }
 
 class Player {
@@ -128,7 +143,7 @@ class Player {
                 this.hp -= (-(this.stats.rec * 2) - (this.stats.rec * 0.75));
             }
         }];
-        this.items = ["null1", "null2", "null3", "null4", "null5", "null6"];
+        this.items = [{name: "null1", func: function(){player.stats.hp+= 1}}, {name: "null2"}, {name: "null3"}, {name: "null4"}, {name: "null5"}, {name: "null6"}];
         this.xSpeed = 0;
         this.ySpeed = 0;
         this.aFrame = 0;
@@ -455,8 +470,9 @@ class Battle {
         this.state = "active";
         this.enemy = enemy;
         this.active = "commands";
-        this.select = [0, 0];
+        this.select = [0, 0, 0];
         this.bg = bg;
+        this.wait = 0;
     }
 
     logic() {
@@ -513,11 +529,19 @@ class Battle {
                         text(player.magic[i].name, 490, 170 + (i * 50));
                     }
                 } else if (this.active == "items") {
-                    if (this.select[1] > player.magic.length - 1) {
+                    if (this.select[1] > player.items.length - 1) {
                         this.select[1] = 0;
                     }
                     if (this.select[1] < 0) {
                         this.select[1] = player.items.length - 1;
+                    }
+                    this.select[2] = floor(this.select[1]/4)
+                    fill(255);
+                    noStroke();
+                    textSize(20);
+                    textAlign(LEFT);
+                    for (var i = this.select[2]*4; i < this.select[2]*4 + 4 && i < player.items.length; i++) {
+                            text(player.items[i].name, 490, 170 + (i%4 * 50));
                     }
                 }
             }
@@ -572,12 +596,17 @@ class Battle {
             noFill();
             stroke(255);
             strokeWeight(4);
-            rect(482, 140 + (this.select[1] * 48), 156, 48);
+            rect(482, 140 + (this.select[1]%4 * 48), 156, 48);
+        }
+
+        if (this.state == "running") {
+            this.run();
         }
     }
 
     display() {
         noStroke();
+        textAlign(LEFT);
         image(this.bg, 0, 0);
         player.state = "idleL";
         image(chr, 580, 480, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
@@ -605,6 +634,19 @@ class Battle {
     }
 
     run() {
-
+        if (this.enemy.boss) {
+            this.state = "running";
+            this.wait++;
+            fill(255);
+            noStroke();
+            textSize(35);
+            textAlign(CENTER);
+            text("Cannot Run Away!", width/2, height/2);
+            if (this.wait > 90) {
+                this.wait = 0;
+                this.state = "active";
+            }
+        }
+        
     }
 }

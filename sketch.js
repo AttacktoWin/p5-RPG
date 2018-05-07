@@ -29,6 +29,9 @@ function draw() {
     }
     // DRAW FRAME
     background(0);
+    if (game.state != "start") {
+        game.logic();
+    }
     game.display();
     if (debug) {
         console.log("X: " + mouseX + ", Y: " + mouseY);
@@ -66,6 +69,9 @@ function keyPressed() {
         }
 
         if (keyCode == 13) {
+            if (game.battle.active == "items") {
+                player.items[game.battle.select[1]].func();
+            }
             if (game.battle.active == "commands") {
                 if (game.battle.select[0] == 0) {
                     game.battle.select[1] = 0;
@@ -79,7 +85,7 @@ function keyPressed() {
                 } else if (game.battle.select[0] == 3) {
                     game.battle.run();
                 }
-            }
+            } 
         }
 
         if (keyCode == 8) {

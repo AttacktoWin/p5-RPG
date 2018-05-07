@@ -1,0 +1,9 @@
+Element -  Strong VS
+Fire - Earth & Poison
+Ice - Fire & Air
+Earth - Electric & Ice
+Void - Light
+Air - Fire & Poison
+Light - Void
+Electricity - Air & Ice
+Poison - Earth & Electric

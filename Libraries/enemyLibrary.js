@@ -10,6 +10,7 @@ class voidBoss {
         this.maxHp = 3;
         this.con = 99999;
         this.rec = 5;
+        this.element = "void";
         this.attacks = [
             {
                 target: "self",

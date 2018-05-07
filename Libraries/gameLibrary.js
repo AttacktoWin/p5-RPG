@@ -48,7 +48,54 @@ class Game {
     }
 
     damage(active, target) {
+        var mod = 1;
+        if (active.element == "fire") {
+            if (target.element == "earth" || target.element == "poison") {
+                mod = 2;
+            } else if (target.element == "ice" || target.element == "air") {
+                mod = 0.5;
+            }
+        } else if (active.element == "ice") {
+            if (target.element == "fire" || target.element == "air") {
+                mod = 2;
+            } else if (target.element == "earth" || target.element == "electric") {
+                mod = 0.5;
+            }
+        } else if (active.element == "earth") {
+            if (target.element == "electric" || target.element == "ice") {
+                mod = 2;
+            } else if (target.element == "fire" || target.element == "poison") {
+                mod = 0.5;
+            }
+        } else if (active.element == "air") {
+            if (target.element == "fire" || target.element == "poison") {
+                mod = 2;
+            } else if (target.element == "ice" || target.element == "electric") {
+                mod = 0.5;
+            }
+        } else if (active.element == "electric") {
+            if (target.element == "air" || target.element == "ice") {
+                mod = 2;
+            } else if (target.element == "earth" || target.element == "poison") {
+                mod = 0.5;
+            }
+        } else if (active.element == "posion") {
+            if (target.element == "earth" || target.element == "electric") {
+                mod = 2;
+            } else if (target.element == "fire" || target.element == "air") {
+                mod = 0.5;
+            }
+        } else if (active.element == "light") {
+            if (taget.element == "void") {
+                mod = 2;
+            }
+        } else if (active.element == "void") {
+            if (target.element == "light") {
+                mod = 2;
+            }
+        }
 
+        return round(((acitve.power * (active.str/target.con) + 2)/25) * mod);
     }
 
     dialogue(arr) {
@@ -127,14 +174,7 @@ class Player {
             con: 2,
             rec: 2
         };
-        this.attacks = [{
-            target: "enemy",
-            name: "Slash",
-            anim: "slash",
-            damage: function (enemy) {
-                return ((this.stats.str * 3) - (enemy.con));
-            }
-        }];
+        this.attacks = [new Slash()];
         this.magic = [{
             target: "self",
             name: "Cure",
@@ -602,6 +642,10 @@ class Battle {
         if (this.state == "running") {
             this.run();
         }
+    }
+
+    attack() {
+        
     }
 
     display() {

@@ -512,6 +512,7 @@ class Battle {
         this.active = "commands";
         this.select = [0, 0, 0];
         this.bg = bg;
+        this.anim = {};
         this.wait = 0;
     }
 
@@ -644,8 +645,13 @@ class Battle {
         }
     }
 
-    attack() {
-        
+    attack(user, target) {
+        let chance = floor(random(1, 101));
+        if (chance >= target.dex - user.dex) {
+            this.state = "anim";
+            this.anim = user.anim;
+            game.damage(user, target);
+        }
     }
 
     display() {

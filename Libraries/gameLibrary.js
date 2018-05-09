@@ -623,7 +623,7 @@ class Battle {
         noFill();
         rect(85, 50, 150, 20);
         if (this.enemy.hp < this.enemy.maxHp / 2) {
-            if (this.enemy.hp < this.enemy.maxHp / 10) {
+            if (this.enemy.hp < this.enemy.maxHp / 10 || this.enemy.hp == 1) {
                 fill("red");
             } else {
                 fill("blue");
@@ -632,7 +632,7 @@ class Battle {
             fill("green");
         }
         noStroke();
-        rect(85, 51, map(this.enemy.hp, -1, this.enemy.maxHp, 0, 149), 18);
+        rect(85, 51, map(this.enemy.hp, 0, this.enemy.maxHp, -1, 149), 18);
         stroke(0);
         strokeWeight(2);
         noFill();
@@ -642,7 +642,7 @@ class Battle {
         textSize(12);
         text(this.enemy.hp + "/" + this.enemy.maxHp, 220, 85);
         if (player.stats.hp < player.stats.maxHp / 2) {
-            if (player.hp < player.maxHp / 10) {
+            if (player.stats.hp < player.stats.maxHp / 10 || player.stats.hp == 1) {
                 fill("red");
             } else {
                 fill("blue");
@@ -651,7 +651,7 @@ class Battle {
             fill("green");
         }
         noStroke();
-        rect(525, 51, map(player.stats.hp, -1, player.stats.maxHp, 0, 149), 18);
+        rect(525, 51, map(player.stats.hp, 0, player.stats.maxHp, -1, 149), 18);
         fill(0);
         noStroke();
         textSize(12);
@@ -684,8 +684,10 @@ class Battle {
         if (chance >= target.dex - user.dex) {
             if (this.state == "active") {
                 this.state = "enemy";
+                this.active = "commands";
             } else if (this.state == "enemy") {
                 this.state = "active";
+                this.active = "commands";
             }
             this.anim = user.anim;
             if (user.state == "player") {

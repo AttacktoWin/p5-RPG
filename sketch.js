@@ -72,6 +72,31 @@ function keyPressed() {
             if (game.battle.active == "items") {
                 player.items[game.battle.select[1]].func();
             }
+            if (game.battle.active == "attacks") {
+                var user = {
+                    str: player.stats.str,
+                    dex: player.stats.dex,
+                    power: player.attacks[game.battle.select[1]].power,
+                    anim: player.attacks[game.battle.select[1]].anim,
+                    element: player.attacks[game.battle.select[1]].element,
+                    state: "player"
+                }
+                if (player.attacks[game.battle.select[1]].target == "enemy") {
+                    var target = {
+                        con: game.battle.enemy.con,
+                        dex: game.battle.enemy.dex,
+                        element: game.battle.enemy.element
+                    }
+                } else {
+                    var target = {
+                        con: player.stats.con,
+                        dex:player.stats.dex,
+                        element: player.stats.element
+                    }
+                }
+                
+                game.battle.attack(user, target);
+            }
             if (game.battle.active == "commands") {
                 if (game.battle.select[0] == 0) {
                     game.battle.select[1] = 0;
@@ -85,7 +110,7 @@ function keyPressed() {
                 } else if (game.battle.select[0] == 3) {
                     game.battle.run();
                 }
-            } 
+            }    
         }
 
         if (keyCode == 8) {

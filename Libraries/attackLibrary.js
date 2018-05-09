@@ -4,5 +4,6 @@ class Slash {
         this.name = "Slash";
         this.element = "null";
         this.anim = "slash";
+        this.target = "enemy";
     }
 }

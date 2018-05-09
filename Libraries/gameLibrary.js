@@ -95,7 +95,7 @@ class Game {
             }
         }
 
-        return round(((acitve.power * (active.str/target.con) + 2)/25) * mod);
+        return ceil(((active.power * (active.str/target.con) + 2)/25) * mod);
     }
 
     dialogue(arr) {
@@ -172,7 +172,8 @@ class Player {
             str: 2,
             dex: 2,
             con: 2,
-            rec: 2
+            rec: 2,
+            element: "null"
         };
         this.attacks = [new Slash()];
         this.magic = [{
@@ -514,6 +515,7 @@ class Battle {
         this.bg = bg;
         this.anim = {};
         this.wait = 0;
+        this.oldState = "";
     }
 
     logic() {
@@ -587,6 +589,34 @@ class Battle {
                 }
             }
         }
+
+        if (this.state == "enemy") {
+            var user = {
+                str: this.enemy.str,
+                dex: this.enemy.dex,
+                power: this.enemy.logic().power,
+                anim: this.enemy.logic().anim,
+                element: this.enemy.logic.element,
+                state: "enemy"
+            }
+            if (this.enemy.logic().target == "enemy") {
+                var target = {
+                    con: player.stats.con,
+                        dex:player.stats.dex,
+                        element: player.stats.element
+                }
+            } else {
+                var target = {
+                    con: this.enemy.con,
+                    dex: this.enemy.dex,
+                    element: this.enemy.element
+                }
+            }
+
+            this.attack(user, target);
+            this.state = "active";
+        }
+
         textAlign(LEFT);
         stroke(0);
         strokeWeight(2);
@@ -633,7 +663,7 @@ class Battle {
             this.defeat();
         }
 
-        if (this.active != "commands") {
+        if (this.active != "commands" && this.state == "active") {
             noFill();
             stroke(255);
             strokeWeight(4);
@@ -643,14 +673,37 @@ class Battle {
         if (this.state == "running") {
             this.run();
         }
+
+        if (this.state == "miss") {
+            this.miss();
+        }
     }
 
     attack(user, target) {
         let chance = floor(random(1, 101));
         if (chance >= target.dex - user.dex) {
-            this.state = "anim";
+            if (this.state == "active") {
+                this.state = "enemy";
+            } else if (this.state == "enemy") {
+                this.state = "active";
+            }
             this.anim = user.anim;
-            game.damage(user, target);
+            if (user.state == "player") {
+                if (user.power > 0) {
+                    this.enemy.hp -= game.damage(user, target);
+                } else {
+                    player.hp -= game.damage(user, target);
+                }
+            } else if (user.state == "enemy") {
+                if (user.power > 0) {
+                    player.hp -= game.damage(user, target);
+                } else {
+                    this.enemy.hp -= game.damage(user, target);
+                }
+            }
+        } else {
+            this.oldState = this.state;
+            this.miss();
         }
     }
 
@@ -698,5 +751,24 @@ class Battle {
             }
         }
         
+    }
+
+    miss() {
+        this.state = "miss";
+            this.wait++;
+            fill(255);
+            noStroke();
+            textSize(35);
+            textAlign(CENTER);
+            text("Missed!", width/2, height/2);
+            if (this.wait > 90) {
+                this.wait = 0;
+                if (this.oldState == "active") {
+                    this.state = "enemy";
+                } else if (this.oldState == "enemy") {
+                    this.state = "active";
+                }
+                this.oldState = "";
+            }
     }
 }

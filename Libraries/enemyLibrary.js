@@ -13,20 +13,16 @@ class voidBoss {
         this.element = "void";
         this.attacks = [
             {
-                target: "self",
                 name: "Heal",
                 anim: "heal",
-                damage: function () {
-                    this.hp -= (-(this.rec * (this.rec*0.7)));
-                }
+                power: -3,
+                target: "self"
             },
             {
-                target: "player",
                 name: "Desolation",
-                anim: "voidAttack",
-                damage: function () {
-                    return((this.str * 5) - (player.stats.con * 2));
-                }
+                anim: "void",
+                power: 3,
+                target: "enemy"
             }
         ]
     }

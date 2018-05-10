@@ -173,7 +173,8 @@ class Player {
             dex: 2,
             con: 2,
             rec: 2,
-            element: "null"
+            element: "null",
+            status: "good"
         };
         this.attacks = [new Slash()];
         this.magic = [{

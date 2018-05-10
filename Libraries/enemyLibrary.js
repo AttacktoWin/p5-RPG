@@ -11,6 +11,7 @@ class voidBoss {
         this.con = 99999;
         this.rec = 5;
         this.element = "void";
+        this.status = "good";
         this.attacks = [
             {
                 name: "Heal",
@@ -21,6 +22,7 @@ class voidBoss {
             {
                 name: "Desolation",
                 anim: "void",
+                element: "void",
                 power: 3,
                 target: "enemy"
             }

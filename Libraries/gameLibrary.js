@@ -33,6 +33,10 @@ class Game {
         this.nameFrame = 1;
     }
 
+    damage(user, target) {
+
+    }
+
     loadScene(scene) {
         $("#scene").append("<script src='Scenes/" + scene + ".js'></script>");
     }
@@ -52,7 +56,7 @@ class Game {
     }
 
     display() {
-        if (this.state != "start" && this.state != "scene" && !this.state.includes("battle")) {
+        if (this.state != "start" && this.state != "scene") {
             noStroke();
             image(this.levelData.tex, 0 - player.x + width / 2, 0 - player.y + height / 2, this.levelData.w, this.levelData.h, 0, 0);
             player.animate();
@@ -111,16 +115,6 @@ class Player {
             element: "null",
             status: "good"
         };
-        this.attacks = [new Slash()];
-        this.magic = [{
-            target: "self",
-            name: "Cure",
-            anim: "heal",
-            damage: function () {
-                this.hp -= (-(this.stats.rec * 2) - (this.stats.rec * 0.75));
-            }
-        }];
-        this.items = [{name: "null1", func: function(){player.stats.hp+= 1}}, {name: "null2"}, {name: "null3"}, {name: "null4"}, {name: "null5"}, {name: "null6"}];
         this.xSpeed = 0;
         this.ySpeed = 0;
         this.aFrame = 0;
@@ -439,5 +433,9 @@ class Player {
             this.aFrame = 0;
         }
         this.aFrame++;
+    }
+
+    attack() {
+
     }
 }

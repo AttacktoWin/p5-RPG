@@ -52,74 +52,11 @@ function keyPressed() {
             scene.progress++;
         }
     }
-    // if (game.state.includes("battle") && game.battle.state == "active") {
-    //     if (keyCode == 83) {
-    //         if (game.battle.active == "commands") {
-    //             game.battle.select[0] += 1;
-    //         } else {
-    //             game.battle.select[1] += 1;
-    //         }
-    //     }
-    //     if (keyCode == 87) {
-    //         if (game.battle.active == "commands") {
-    //             game.battle.select[0] -= 1;
-    //         } else {
-    //             game.battle.select[1] -= 1;
-    //         }
-    //     }
-
-    //     if (keyCode == 13) {
-    //         if (game.battle.active == "items") {
-    //             player.items[game.battle.select[1]].func();
-    //         }
-    //         if (game.battle.active == "attacks") {
-    //             var user = {
-    //                 str: player.stats.str,
-    //                 dex: player.stats.dex,
-    //                 power: player.attacks[game.battle.select[1]].power,
-    //                 anim: player.attacks[game.battle.select[1]].anim,
-    //                 element: player.attacks[game.battle.select[1]].element,
-    //                 state: "player"
-    //             }
-    //             if (player.attacks[game.battle.select[1]].target == "enemy") {
-    //                 var target = {
-    //                     con: game.battle.enemy.con,
-    //                     dex: game.battle.enemy.dex,
-    //                     element: game.battle.enemy.element
-    //                 }
-    //             } else {
-    //                 var target = {
-    //                     con: player.stats.con,
-    //                     dex:player.stats.dex,
-    //                     element: player.stats.element
-    //                 }
-    //             }
-                
-    //             game.battle.attack(user, target);
-    //         }
-    //         if (game.battle.active == "commands") {
-    //             if (game.battle.select[0] == 0) {
-    //                 game.battle.select[1] = 0;
-    //                 game.battle.active = "attacks";
-    //             } else if (game.battle.select[0] == 1) {
-    //                 game.battle.select[1] = 0;
-    //                 game.battle.active = "magic";
-    //             } else if (game.battle.select[0] == 2) {
-    //                 game.battle.select[1] = 0;
-    //                 game.battle.active = "items";
-    //             } else if (game.battle.select[0] == 3) {
-    //                 game.battle.run();
-    //             }
-    //         }    
-    //     }
-
-    //     if (keyCode == 8) {
-    //         if (game.battle.active != "commands") {
-    //             game.battle.active = "commands";
-    //             game.battle.select[1] = 0;
-    //         }
-    //     }
-    // }
+    if (game.state == "active") {
+        if (keyCode == 32) {
+            player.attack();
+        }
+    }
 }
 
 function keyReleased() {

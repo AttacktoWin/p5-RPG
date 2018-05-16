@@ -436,25 +436,25 @@ class Player {
     }
 
     attack() {
-        if (player.state.contains("U")) {
-            if (player.state.contains("L")) {
+        if (player.state.includes("U")) {
+            if (player.state.includes("L")) {
                 console.log("Attacking Up Left");
-            } else if (player.state.conatins("R")) {
+            } else if (player.state.includes("R")) {
                 console.log("Attacking Up Right");
             } else {
                 console.log("Attacking Up");
             }
-        } else if (player.state.contains("D")) {
-            if (player.state.contains("L")) {
+        } else if (player.state.includes("D")) {
+            if (player.state.includes("L")) {
                 console.log("Attacking Down Left");
-            } else if (player.state.conatins("R")) {
+            } else if (player.state.includes("R")) {
                 console.log("Attacking Down Right");
             } else {
                 console.log("Attacking Down");
             }
-        } else if (player.state.contains("L")) {
+        } else if (player.state.includes("L")) {
             console.log("Attacking Left");
-        } else if (player.state.contains("R")) {
+        } else if (player.state.includes("R")) {
             console.log("Attacking Right");
         }
     }

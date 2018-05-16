@@ -1,22 +1,33 @@
 game.state = "scene";
 
 let scene = {
-    sceneobj: [
-        { txt: "Hello, There!", img: loadImage('Sprites/theVoid.png'), name: "The Void" },
-        { txt: "Welcome to the Void!", img: loadImage('Sprites/theVoid.png'), name: "The Void" },
-        { txt: "You're here forever!", img: loadImage('Sprites/theVoid1.png'), name: "The Void" }
+    sceneobj: [{
+            txt: "Hello, There!",
+            img: loadImage('Sprites/theVoid.png'),
+            name: "The Void"
+        },
+        {
+            txt: "Welcome to the Void!",
+            img: loadImage('Sprites/theVoid.png'),
+            name: "The Void"
+        },
+        {
+            txt: "You're here forever!",
+            img: loadImage('Sprites/theVoid1.png'),
+            name: "The Void"
+        }
     ],
     dProgress: 0,
     state: "moving",
     progress: 0,
     wait: 0,
-    disposeScene: function() {
+    disposeScene: function () {
         player.state = "idleL";
         game.state = "active";
         $("#scene").empty();
         scene = undefined;
     },
-    drawScene: function() {
+    drawScene: function () {
         image(game.levelData.tex, 0 - player.x + width / 2, 0 - player.y + height / 2, game.levelData.w, game.levelData.h, 0, 0);
         image(chr, width / 2, height / 2, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
         for (var i = 0; i < game.collisionData.length; i++) {
@@ -26,12 +37,12 @@ let scene = {
                 }
             }
         }
-        fill(0, 0, 0, (255-this.wait*2));
+        fill(0, 0, 0, (255 - this.wait * 2));
         rect(0, 0, width, height);
-        
+
         if (this.state == "moving") {
             player.state = "walkR";
-            player.x += gameWidth/2;
+            player.x += gameWidth / 2;
             this.wait++;
         }
         if (this.wait == 60) {

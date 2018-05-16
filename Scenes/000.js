@@ -51,7 +51,7 @@ let scene = {
         }
         if (this.wait == 120) {
             this.disposeScene();
-            game.loadBattle(new voidBoss(), loadImage('Sprites/test01Battle.png'));
+            // game.loadBattle(new voidBoss(), loadImage('Sprites/test01Battle.png'));
         }
     }
 }

@@ -32,7 +32,7 @@ class TestEnemy {
             this.ySpeed += this.speed;
         }
 
-        for (var i = 0; i < game.collisionData.length) {
+        for (var i = 0; i < game.collisionData.length; i++) {
             if (game.collisionData[i].solid) {
                 if (this.x + this.xSpeed + this.w > game.collisionData[i].x && this.x + this.xSpeed < game.collisionData[i].x + game.collisionData[i].w) {
                     if (this.y + this.h > game.collisionData[i].y && this.y < game.collisionData[i].y + game.collisionData[i].h) {

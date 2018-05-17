@@ -17,6 +17,7 @@ class Game {
             }
         ];
         this.collisionData = [];
+        this.enemies = [];
         this.levelData = {};
         this.nameFrame = 0;
         this.battle = {};
@@ -61,6 +62,11 @@ class Game {
             image(this.levelData.tex, 0 - player.x + width / 2, 0 - player.y + height / 2, this.levelData.w, this.levelData.h, 0, 0);
             player.animate();
             image(chr, width / 2, height / 2, 30, 60, player.currentFrame.x * 30, player.currentFrame.y * 60, 30, 60);
+            for (var i = 0; i < this.enemies.length; i++) {
+                this.enemies[i].logic();
+                this.enemies[i].animate();
+                this.enemies[i].show();
+            }
             for (var i = 0; i < this.collisionData.length; i++) {
                 if (this.collisionData[i].x < player.x + width / 2 && this.collisionData[i].x + this.collisionData[i].w > player.x - width / 2) {
                     if (this.collisionData[i].y < player.y + height / 2 && this.collisionData[i].y + this.collisionData[i].h > player.y - height / 2) {
@@ -181,8 +187,8 @@ class Player {
                 }
             } else if (keyIsDown(68)) {
                 this.xSpeed += gameWidth / 2;
-                if (this.state != "walkR") {
-                    this.state = "walkR";
+                if (this.state != "walkL") {
+                    this.state = "walkL";
                     this.aFrame = 0;
                 }
             }
